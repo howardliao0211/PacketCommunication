@@ -70,7 +70,7 @@ int main(void)
     tx_len = fill_simulate_packet(simulate_packet, 0xFF, COMM_COMMAND_ECHO, 50);
     COMM_Receive(&comm_handle, simulate_packet, tx_len);
     COMM_Run(&comm_handle);
-    assert(comm_handle.status == COMM_STATUS_MISSING_HEADER);
+    assert(comm_handle.status == COMM_STATUS_FORMAT_ERROR);
 
     /* Case 5. Packet with wrong length. */
     tx_len = fill_simulate_packet(simulate_packet, COMM_DIR_WRITE, COMM_COMMAND_ECHO, 50);

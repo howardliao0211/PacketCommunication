@@ -47,7 +47,7 @@ static COMM_STATUS COMM_FindPacket(struct COMM *self)
 
     if( !self->header_found )
     {
-        return COMM_STATUS_MISSING_HEADER;
+        return COMM_STATUS_FORMAT_ERROR;
     }
 
     HEADER_FOUND:
@@ -71,7 +71,7 @@ static COMM_STATUS COMM_ChecksumCheck(struct COMM *self)
 
     if( !self->header_found )
     {
-        return COMM_STATUS_MISSING_HEADER;
+        return COMM_STATUS_FORMAT_ERROR;
     }
 
     checksum = COMM_ChecksumCal(&self->rx_buf[self->header_idx], COMM_MIN_SIZE + self->rx_payload_len);
