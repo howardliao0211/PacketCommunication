@@ -6,7 +6,6 @@
 static void COMM_Reset(struct COMM *self)
 {
     self->header_found      = false;
-    self->status            = COMM_STATUS_FAIL;
     self->rx_buf_rear       = 0;
     self->tx_payload_ptr    = &self->tx_buf[COMM_PAYLOAD_OFFSET];
 }
@@ -25,39 +24,45 @@ static uint8_t COMM_ChecksumCal(uint8_t *buf, uint16_t size)
 
 static COMM_STATUS COMM_FindPacket(struct COMM *self)
 {
+    int i;
+
     if( self->header_found )
     {
-        return self->status;
+        goto HEADER_FOUND;
     }
 
-    if( self->rx_buf_rear < COMM_MIN_SIZE )
+    for(i = 0; i < self->rx_buf_rear; i++)
+    {
+        if( (self->rx_buf[i + 0] == COMM_HEADER[0]) &&
+            (self->rx_buf[i + 1] == COMM_HEADER[1]) &&
+            (self->rx_buf[i + 2] == COMM_HEADER[2]) &&
+            (self->rx_buf[i + 3] == COMM_HEADER[3]) &&
+            (self->rx_buf[i + COMM_DIR_OFFSET] == COMM_DIR_WRITE)
+        )
+        {
+            self->header_found = true;
+            break;
+        }
+    }
+
+    if( !self->header_found )
+    {
+        return COMM_STATUS_MISSING_HEADER;
+    }
+
+    HEADER_FOUND:
+    self->header_idx        = i;
+    self->cmd               = self->rx_buf[i + COMM_COMMAND_OFFSET];
+    self->rx_payload_len    = ((uint16_t) self->rx_buf[i + COMM_PAYLOAD_LEN_OFFSET + 0] << 8)
+                            + ((uint16_t) self->rx_buf[i + COMM_PAYLOAD_LEN_OFFSET + 1]);
+    self->rx_payload_ptr    = self->rx_buf + i + COMM_PAYLOAD_OFFSET;
+    
+    if( self->rx_buf_rear != COMM_MIN_SIZE + self->rx_payload_len )
     {
         return COMM_STATUS_LENGTH_ERROR;
     }
 
-    for(int i = 0; i < self->rx_buf_rear; i++)
-    {
-        if( (self->rx_buf[i + 0] != COMM_HEADER[0]) ||
-            (self->rx_buf[i + 1] != COMM_HEADER[1]) ||
-            (self->rx_buf[i + 2] != COMM_HEADER[2]) ||
-            (self->rx_buf[i + 3] != COMM_HEADER[3]) ||
-            (self->rx_buf[i + COMM_DIR_OFFSET] != COMM_DIR_WRITE)
-        )
-        {
-            continue;
-        }
-
-        self->header_found      = true;
-        self->header_idx        = i;
-        self->cmd               = self->rx_buf[i + COMM_COMMAND_OFFSET];
-        self->rx_payload_len    = ((uint16_t) self->rx_buf[i + COMM_PAYLOAD_LEN_OFFSET + 0] << 8)
-                                + ((uint16_t) self->rx_buf[i + COMM_PAYLOAD_LEN_OFFSET + 1]);
-        self->rx_payload_ptr    = self->rx_buf + i + COMM_PAYLOAD_OFFSET;
-
-        return COMM_STATUS_SUCCESS;
-    }
-
-    return COMM_STATUS_MISSING_HEADER;
+    return COMM_STATUS_SUCCESS;
 }
 
 static COMM_STATUS COMM_ChecksumCheck(struct COMM *self)
@@ -107,7 +112,7 @@ static COMM_STATUS COMM_CommandProcess(struct COMM *self)
     }
 }
 
-void __attribute__((weak)) COMM_Send(struct COMM *self)
+void COMM_Send(struct COMM *self)
 {
     /* Fill in user application */
     printf("Simulate tx process\n");
@@ -162,20 +167,24 @@ void COMM_Run(struct COMM *self)
     self->status = COMM_FindPacket(self);
     if( self->status != COMM_STATUS_SUCCESS )
     {
-        printf("Err @ COMM_FindPacket\n");
+        printf("Err @ COMM_FindPacket. status: 0x%X\n", self->status);
         goto COMM_SEND_STATUS;
     }
 
     self->status = COMM_ChecksumCheck(self);
     if( self->status != COMM_STATUS_SUCCESS )
     {
-        printf("ERR @ COMM_ChecksumCheck\n");
+        printf("ERR @ COMM_ChecksumCheck. status: 0x%X\n", self->status);
         goto COMM_SEND_STATUS;
     }
 
     self->status = COMM_CommandProcess(self);
     if( self->status_msg )
     {
+        if( self->status != COMM_STATUS_SUCCESS )
+        {
+            printf("ERR @ COMM_CommandProcess. status: 0x%X\n", self->status);
+        }
         goto COMM_SEND_STATUS;
     }
     else
