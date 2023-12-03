@@ -17,6 +17,5 @@ if __name__ == '__main__':
     port = find_device_port()
     serial = serial.Serial(port=port, baudrate=921600)
     comm = COMM(COMM_Serial(serial), 1000)
-    # comm = COMM(COMM_Simulate, 1000)
     comm.echo(range(10))
     

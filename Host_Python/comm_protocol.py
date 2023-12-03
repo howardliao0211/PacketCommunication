@@ -65,3 +65,4 @@ class COMM_Serial(COMM_Protocol):
 
         data.clear()
         data.extend(list(self.serial.read(self.serial.in_waiting)))
+        return True
