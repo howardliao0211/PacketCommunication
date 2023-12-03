@@ -94,7 +94,7 @@ static void COMM_SendResponse(struct COMM *self)
     self->tx_buf[checksum_offset] = ~(checksum) + 1;
     self->tx_buf_rear = COMM_MIN_SIZE + self->tx_payload_len;
 
-    COMM_Send(self);
+    self->send(self);
 }
 
 static COMM_STATUS COMM_CommandProcess(struct COMM *self)
@@ -112,36 +112,13 @@ static COMM_STATUS COMM_CommandProcess(struct COMM *self)
     }
 }
 
-void COMM_Send(struct COMM *self)
+void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(struct COMM *s))
 {
-    /* Fill in user application */
-    printf("Simulate tx process\n");
-    printf("TX buf (Size: %d):\n", self->tx_buf_rear);
-    for(int i = 0; i < self->tx_buf_rear; i++)
-    {
-        if( i % 0x10 == 0)
-        {
-            printf("[0x%04X]: ", i);
-        }
-
-        printf("0x%02X ", self->tx_buf[i]);
-
-        if( (i + 1) % 0x10 == 0)
-        {
-            printf("\n");
-        }
-    }
-    printf("\n");
-
-    printf("Checksum: %d\n", COMM_ChecksumCal(self->tx_buf, self->tx_buf_rear));
-}
-
-void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size)
-{
-    self->rx_buf            = _rx_buf;
-    self->rx_buf_size       = _rx_buf_size;
-    self->tx_buf            = _tx_buf;
-    self->tx_buf_size       = _tx_buf_size;
+    self->rx_buf        = _rx_buf;
+    self->rx_buf_size   = _rx_buf_size;
+    self->tx_buf        = _tx_buf;
+    self->tx_buf_size   = _tx_buf_size;
+    self->send          = _send;
     COMM_Reset(self);
 }
 

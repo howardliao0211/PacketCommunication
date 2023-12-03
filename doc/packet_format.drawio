@@ -1,0 +1,46 @@
+<mxfile host="65bd71144e">
+    <diagram id="336iri7CXeuM-QhxKg7z" name="Page-1">
+        <mxGraphModel dx="730" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Header&lt;br&gt;(&quot;COMM&quot;)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="200" width="160" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="Direction&lt;br&gt;0: Host -&amp;gt; Slave&lt;br&gt;1: Slave -&amp;gt; Host" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="170" y="200" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="4" value="Command" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="290" y="200" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="Payload Length" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="410" y="200" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="Payload(s)" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="530" y="200" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="Checksum" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="650" y="200" width="120" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="4 Bytes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="60" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="1 Byte" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="200" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="1 Byte" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="1 Byte" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="680" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="2 Bytes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="440" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="Payload Length Bytes" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontStyle=1" parent="1" vertex="1">
+                    <mxGeometry x="560" y="300" width="60" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

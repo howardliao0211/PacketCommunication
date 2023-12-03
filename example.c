@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <stdint.h>
 #include <assert.h>
 #include "comm.h"
@@ -41,12 +42,34 @@ uint16_t fill_simulate_packet(uint8_t *buf, uint8_t dir, uint8_t cmd, uint16_t s
     return COMM_MIN_SIZE + simulate_payload_num;
 }
 
+void example_send(struct COMM *self)
+{
+    /* Fill in user application */
+    printf("Simulate tx process\n");
+    printf("TX buf (rear: %d):\n", self->tx_buf_rear);
+    for(int i = 0; i < self->tx_buf_rear; i++)
+    {
+        if( i % 0x10 == 0)
+        {
+            printf("[0x%04X]: ", i);
+        }
+
+        printf("0x%02X ", self->tx_buf[i]);
+
+        if( (i + 1) % 0x10 == 0)
+        {
+            printf("\n");
+        }
+    }
+    printf("\n");
+}
+
 int main(void)
 {
     uint16_t tx_len;
 
     struct COMM comm_handle;
-    COMM_Init(&comm_handle, rx_buf, BUF_SIZE, tx_buf, BUF_SIZE);
+    COMM_Init(&comm_handle, rx_buf, BUF_SIZE, tx_buf, BUF_SIZE, example_send);
 
     /* Case 1. Packet with 10 payloads */
     tx_len = fill_simulate_packet(simulate_packet, COMM_DIR_WRITE, COMM_COMMAND_ECHO, 10);

@@ -45,8 +45,8 @@ struct COMM
     uint16_t    rx_buf_rear;
 
     uint8_t     *tx_buf;
-    uint16_t    tx_buf_rear;
     uint16_t    tx_buf_size;
+    uint16_t    tx_buf_rear;
 
     uint16_t    header_idx;
     uint8_t     cmd;
@@ -59,13 +59,12 @@ struct COMM
 
     bool header_found;
     bool status_msg;
+
+    void (*send)(struct COMM *s);
 };
 
-/* Fill in user application for these fucnctions. */
-void COMM_Send(struct COMM *self);
-
 /* Insert these functions into user project. */
-void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size);
+void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(struct COMM *s));
 void COMM_Receive(struct COMM *self, uint8_t *buf, uint16_t size);
 void COMM_Run(struct COMM *self);
 
