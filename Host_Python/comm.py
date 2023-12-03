@@ -74,7 +74,29 @@ class COMM:
         if not packet.is_checksum_valid():
             return Packet(True, True, COMM_STATUS.CHECKSUM_FAIL)
         
-        return list_to_packet(rx_list)
+        return packet
+    
+    def __receive_only_transaction(self) -> Packet:
+        rx_list = list()
+        elapsed_time_ms = 0
+        current_time_ms = int(time.time() * 1000)
+
+        while not self.__receive_packet(rx_list):
+            elapsed_time_ms += int(time.time() * 1000) - current_time_ms
+            current_time_ms  = int(time.time() * 1000)
+
+            if elapsed_time_ms >= self.timeout_ms:
+                print('Timeout')
+                return Packet(False)
+
+        packet = list_to_packet(rx_list)
+        if not packet.is_header_valid() or not packet.is_read_direction():
+            return Packet(True, True, COMM_STATUS.FORMAT_ERROR)
+        
+        if not packet.is_checksum_valid():
+            return Packet(True, True, COMM_STATUS.CHECKSUM_FAIL)
+        
+        return packet
 
     def __send_packet(self, cmd: int, payload_len: int, payload: list) -> bool:
         checksum    = int()
