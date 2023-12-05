@@ -60,11 +60,11 @@ struct COMM
     bool header_found;
     bool status_msg;
 
-    void (*send)(struct COMM *s);
+    void (*send)(uint8_t *buf, uint16_t len);
 };
 
 /* Insert these functions into user project. */
-void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(struct COMM *s));
+void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(uint8_t *buf, uint16_t len));
 void COMM_Receive(struct COMM *self, uint8_t *buf, uint16_t size);
 void COMM_Run(struct COMM *self);
 

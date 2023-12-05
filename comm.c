@@ -94,7 +94,7 @@ static void COMM_SendResponse(struct COMM *self)
     self->tx_buf[checksum_offset] = ~(checksum) + 1;
     self->tx_buf_rear = COMM_MIN_SIZE + self->tx_payload_len;
 
-    self->send(self);
+    self->send(self->tx_buf, self->tx_buf_rear);
 }
 
 static COMM_STATUS COMM_CommandProcess(struct COMM *self)
@@ -112,7 +112,7 @@ static COMM_STATUS COMM_CommandProcess(struct COMM *self)
     }
 }
 
-void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(struct COMM *s))
+void COMM_Init(struct COMM *self, uint8_t *_rx_buf, uint16_t _rx_buf_size, uint8_t *_tx_buf, uint16_t _tx_buf_size, void (*_send)(uint8_t *buf, uint16_t len))
 {
     self->rx_buf        = _rx_buf;
     self->rx_buf_size   = _rx_buf_size;

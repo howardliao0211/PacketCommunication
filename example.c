@@ -42,19 +42,19 @@ uint16_t fill_simulate_packet(uint8_t *buf, uint8_t dir, uint8_t cmd, uint16_t s
     return COMM_MIN_SIZE + simulate_payload_num;
 }
 
-void example_send(struct COMM *self)
+void example_send(uint8_t *buf, uint16_t len)
 {
     /* Fill in user application */
     printf("Simulate tx process\n");
-    printf("TX buf (rear: %d):\n", self->tx_buf_rear);
-    for(int i = 0; i < self->tx_buf_rear; i++)
+    printf("TX Len: %d\n", len);
+    for(int i = 0; i < len; i++)
     {
         if( i % 0x10 == 0)
         {
             printf("[0x%04X]: ", i);
         }
 
-        printf("0x%02X ", self->tx_buf[i]);
+        printf("0x%02X ", buf[i]);
 
         if( (i + 1) % 0x10 == 0)
         {
