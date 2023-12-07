@@ -3,9 +3,9 @@ A C library for packet communication that can be easily ported into users' proje
 
 **Note: This library only implements functions for the slave device.**
 
-**A python example code has been included to show how the host device can communicate with the slave device.**
+**User can refer to the PacketCommunication_Host repository for host fuctions implementation.**
 
-# User Guide
+# Getting Started
 1. Declare a communication handle and initialize it with COMM_Init. 
 ```
 struct COMM comm_handle;
