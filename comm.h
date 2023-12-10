@@ -23,7 +23,7 @@
 #define COMM_PAYLOAD_LEN_OFFSET                 (6)
 #define COMM_PAYLOAD_OFFSET                     (8)
 
-#define COMM_COMMAND_ECHO                       (0x01)
+#define COMM_COMMAND_ECHO                       (0x00)
 
 typedef enum _COMM_STATUS
 {
